@@ -1,0 +1,80 @@
+{% extends 'sentimientos/base.html' %}
+{% load static %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sentimientos/css/entrenar.css' %}">
+{% endblock %}
+
+
+{% block inicio %}
+    <a class="nav-link active" aria-current="page" href="../">Inicio</a>
+{% endblock %}
+
+{% block guardar %}
+    <a class="nav-link" href="../alimentar_modelo/">Alimentar Modelo</a>
+{% endblock %}
+
+{% block entrenar %}
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Entrenar Modelo</a>
+{% endblock %}
+
+
+{% block procesar %}
+    <a class="nav-link" href="../probar_modelo/">Probar modelo</a>
+{% endblock %}
+
+{% block content %}
+    {% if comment %}
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col mt-3">
+                    <p class="fw-light fs-4">Los datos se almacenaron correctamente y los resultados del
+                        pre-procesamiento del texto se muestran a continuación:</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-3">
+            <div class="row shadow-lg p-2">
+                <div class="col">
+                    <table class="table fs-5">
+                        <thead>
+                        <tr>
+                            <th scope="col">Proceso</th>
+                            <th scope="col">Texto</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Texto sin procesar</th>
+                            <td>{{ comment }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Convertir a minúsculas</th>
+                            <td>{{ lower_text }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Eliminar signos y acentos</th>
+                            <td>{{ unaccented_comment }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Eliminar stop words</th>
+                            <td>{% for word in stopwords_remove %}{{ word }} {% endfor %}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Tokenizar texto</th>
+                            <td>{{ stopwords_remove }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block jsblock %}
+    <script src="{% static 'sentimientos/js/entrenar_modelo.js' %}"></script>
+{% endblock %}

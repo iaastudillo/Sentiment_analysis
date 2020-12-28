@@ -1,39 +1,46 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-import nltk
-from nltk.corpus import stopwords
-import unidecode
+from sentimientos.models import *
+from sentimientos.procesarDatos import *
 
 # Create your views here.
-def index(request):
-    return render(request, 'sentimientos/index.html', {'saludo': 'hola mundo'})
+def home(request):
+    return render(request, 'sentimientos/home.html', {})
 
-def procearComentarios(request):
-    comment = request.GET.get('text')
-    #convierte a minúsculas
-    lower_text = comment.lower()
 
-    #quita los acentos
-    unaccented_comment = unidecode.unidecode(lower_text)
+def probar_modelo(request):
+    return render(request, 'sentimientos/probar_modelo.html', {})
 
-    #toqueniza la frace
-    tokenizer = nltk.RegexpTokenizer(r'\w+')
-    comment_tokens = tokenizer.tokenize(unaccented_comment)
 
-    #Elimina stop words
-    stop_words = set(stopwords.words('spanish'))
-    filtered_sentence = [w for w in comment_tokens if not w in stop_words]
-    filtered_sentence = []
-    for w in comment_tokens:
-        if w not in stop_words:
-            filtered_sentence.append(w)
-    print(comment_tokens)
-    print(filtered_sentence)
+def entrenar_modelo(request):
+    if request.POST:
 
-    context = {'comment': comment,
-               'lower_text': lower_text,
-               'unaccented_comment': unaccented_comment,
-               'comment_tokens': comment_tokens,
-               'stopwords_remove': filtered_sentence}
+        comentario_post = request.POST['comentario_txt']
 
-    return render(request, 'sentimientos/procesar.html', context)
+        if request.POST['flexRadio'] == 'positivo':
+            clasificacion_post = 1
+        if request.POST['flexRadio'] == 'neutro':
+            clasificacion_post = 0
+        if request.POST['flexRadio'] == 'negativo':
+            clasificacion_post = -1
+
+        context = procesar_comentario(comentario_post)
+
+        comentario_final = ''
+        for word in context['stopwords_remove']:
+            comentario_final += word + " "
+
+        c = Comentarios(comentario=comentario_post,
+                        comentario_final=comentario_final,
+                        clasificacion=clasificacion_post)
+        c.save()
+
+        print(comentario_post, comentario_final, clasificacion_post)
+
+        return render(request, 'sentimientos/entrenar_modelo.html', context)
+    else:
+        return render(request, 'sentimientos/entrenar_modelo.html')
+
+
+def alimentar_modelo(request):
+    return render(request, 'sentimientos/alimentar_modelo.html', {})
+

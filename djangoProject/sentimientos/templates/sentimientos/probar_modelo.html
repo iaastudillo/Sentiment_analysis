@@ -1,0 +1,23 @@
+{% extends 'sentimientos/base.html' %}
+
+{% block title %}Probar modelo{% endblock %}
+
+{% block inicio %}
+    <a class="nav-link active" aria-current="page" href="../">Inicio</a>
+{% endblock %}
+
+{% block guardar %}
+    <a class="nav-link" href="../alimentar_modelo/">Alimentar Modelo</a>
+{% endblock %}
+
+{% block entrenar %}
+    <a class="nav-link" href="../entrenar_modelo/">Entrenar Modelo</a>
+{% endblock %}
+
+{% block procesar %}
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Probar modelo</a>
+{% endblock %}
+
+{% block content %}
+    <h2>estas en la pag de procesamiento</h2>
+{% endblock %}

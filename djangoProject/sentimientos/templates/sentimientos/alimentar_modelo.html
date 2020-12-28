@@ -1,0 +1,71 @@
+{% extends 'sentimientos/base.html' %}
+{% load static %}
+
+{% block inicio %}
+    <a class="nav-link active" aria-current="page" href="../">Inicio</a>
+{% endblock %}
+
+{% block guardar %}
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Alimentar Modelo</a>
+{% endblock %}
+
+{% block entrenar %}
+    <a class="nav-link" href="../entrenar_modelo/">Entrenar Modelo</a>
+{% endblock %}
+
+{% block procesar %}
+    <a class="nav-link" href="../probar_modelo/">Probar modelo</a>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container text">
+        <div class="row">
+            <div class="col-md-12 pt-5">
+                <form action="../entrenar_modelo/" method="POST"
+                      id="formulario">
+                {% csrf_token %}
+                    <div class="pb-5">
+                        <label for="exampleFormControlTextarea1" class="form-label fs-3 pb-4">Ingrese un comentario
+                        </label>
+                        <textarea class="form-control border border-primary shadow-lg" id="comentario_txt"
+                                  name="comentario_txt" rows="15"></textarea>
+                    </div>
+
+                    <label for="exampleFormControlCheck" class="form-label fs-3 pb-4 pt-4">Escoja una clasificación
+                    </label>
+                    <div class="form-check fs-5 fw-light pb-3">
+                        <input value="positivo" class="form-check-input border border-primary" type="radio"
+                               name="flexRadio" id="flexRadioDefault1">
+                        <label class="form-check-label " for="flexRadioDefault1">
+                            Positivo
+                        </label>
+                    </div>
+                    <div class="form-check fs-5 fw-light pb-3">
+                        <input value="neutro" class="form-check-input border border-primary" type="radio"
+                               name="flexRadio" id="flexRadioDefault2">
+                        <label class="form-check-label " for="flexRadioDefault2">
+                            Neutro
+                        </label>
+                    </div>
+                    <div class="form-check fs-5 fw-light pb-3">
+                        <input value="negativo" class="form-check-input border border-primary" type="radio"
+                               name="flexRadio" id="flexRadioDefault3">
+                        <label class="form-check-label" for="flexRadioDefault3">
+                            Negativo
+                        </label>
+                    </div>
+                    <div class="t-5 d-grid gap-2 col-6 mx-auto pt-5">
+                        <button id="enviar" name="enviar" class="btn btn-outline-primary fs-5 shadow-lg"
+                                type="submit">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block jsblock %}
+    <script src="{% static 'sentimientos/js/alimentar_modelo.js' %}"></script>
+{% endblock %}
